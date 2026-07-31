@@ -1,0 +1,2638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SciMatika | STEM AI Teaching Companion & Activity Suite</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-card-hover: rgba(51, 65, 85, 0.85);
+            --primary-math: #06b6d4;
+            --primary-science: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f59e0b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5, .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        /* --- Glassmorphism --- */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glow);
+        }
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            font-weight: 500;
+            margin: 0 6px;
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #38bdf8;
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            position: relative;
+            padding: 100px 0 60px 0;
+            background: radial-gradient(circle at 50% 30%, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 1) 70%);
+        }
+
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.05);
+            font-size: 2.5rem;
+            animation: float 14s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        /* --- Buttons --- */
+        .btn-gradient-primary {
+            background: linear-gradient(135deg, #0284c7, #6366f1);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+            color: #fff;
+        }
+
+        .btn-gradient-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5);
+            color: #fff;
+        }
+
+        .btn-gradient-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+            color: #fff;
+        }
+
+        /* --- Feature Cards --- */
+        .feature-card, .subject-card {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            position: relative;
+        }
+        .feature-card:hover, .subject-card:hover {
+            transform: translateY(-6px);
+            background: var(--bg-card-hover);
+        }
+        .feature-card.ilaw-highlight {
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+        .feature-card.ppt-highlight {
+            border-color: #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        .feature-card.activity-highlight {
+            border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .subject-card.math-card.active {
+            border-color: var(--primary-math);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+            background: rgba(6, 182, 212, 0.1);
+        }
+        .subject-card.science-card.active {
+            border-color: var(--primary-science);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* --- Form Elements --- */
+        .form-control, .form-select {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-glow);
+            color: var(--text-light);
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(15, 23, 42, 0.9);
+            border-color: #38bdf8;
+            color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
+        }
+        .form-select option {
+            background-color: #0f172a;
+            color: #fff;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-glow);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* --- Output Navigation --- */
+        .output-nav-pills .nav-link {
+            color: var(--text-muted);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+        .output-nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #0284c7, #6366f1);
+            color: #fff;
+        }
+
+        .step-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .interactive-preview-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px dashed rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .modal-content {
+            background-color: #0f172a;
+            border: 1px solid var(--border-glow);
+            color: var(--text-light);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Math & Science Icons -->
+    <div class="floating-bg">
+        <i class="fa-solid fa-calculator floating-icon" style="top: 15%; left: 10%;"></i>
+        <i class="fa-solid fa-atom floating-icon" style="top: 25%; right: 12%;"></i>
+        <i class="fa-solid fa-dna floating-icon" style="top: 65%; left: 8%;"></i>
+        <i class="fa-solid fa-microscope floating-icon" style="top: 75%; right: 15%;"></i>
+        <i class="fa-solid fa-square-root-variable floating-icon" style="top: 45%; left: 85%;"></i>
+        <i class="fa-solid fa-flask floating-icon" style="top: 85%; left: 45%;"></i>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark z-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#hero">
+                <i class="fa-solid fa-brain text-info"></i>
+                <span>SciMatika</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#subjects">Subjects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#generator">AI Generator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#activity-suite">Activity Suite</a></li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <button class="btn btn-sm btn-info rounded-pill px-3 fw-semibold text-dark" onclick="openGem('ILAW', event)">
+                            📖 ILAW Planner <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 0.75rem;"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item ms-2 mt-2 mt-lg-0">
+                        <button class="btn btn-sm btn-warning rounded-pill px-3 fw-semibold text-dark" onclick="openGem('PPT', event)">
+                            📊 PowerPoint Gem <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 0.75rem;"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="position-relative z-1">
+
+        <!-- 1. Hero Section -->
+        <section id="hero" class="hero-section text-center">
+            <div class="container">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill glass-card border-info">
+                    <span class="badge bg-info text-dark rounded-pill">STEM</span>
+                    <small class="text-light">AI Teaching Companion & Interactive Suite</small>
+                </div>
+                <h1 class="display-3 fw-bold mb-2">SciMatika</h1>
+                <p class="h4 text-info mb-4 brand-font">AI Companion for Mathematics & Science Educators</p>
+                <p class="lead text-secondary mx-auto mb-4" style="max-width: 700px;">
+                    Empowering STEM educators to instantly build curriculum-aligned ILAW lesson plans, dynamic PowerPoint presentation outlines, and interactive classroom activities.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <button class="btn btn-gradient-primary btn-lg d-flex align-items-center gap-2" onclick="openGem('ILAW', event)">
+                        <span>📖 Launch ILAW Lesson Planner</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square fs-6"></i>
+                    </button>
+                    <button class="btn btn-gradient-warning btn-lg d-flex align-items-center gap-2" onclick="openGem('PPT', event)">
+                        <span>📊 Launch PowerPoint Gem</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square fs-6"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="container my-5">
+
+            <!-- 2. Subject Selection -->
+            <section id="subjects" class="mb-5 pt-4">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold"><span class="step-badge">1</span>Select Subject Track</h2>
+                    <p class="text-muted">Choose your STEM focus area to adjust pedagogical frameworks.</p>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-5">
+                        <div class="glass-card p-4 subject-card math-card text-center h-100 active" id="cardMath" onclick="selectSubject('Mathematics')">
+                            <div class="rounded-circle bg-info bg-opacity-10 p-3 d-inline-block text-info fs-2 mb-3">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <h3 class="h4 fw-bold mb-2">Mathematics</h3>
+                            <p class="text-muted mb-4">Generates structured guides for Algebra, Geometry, Statistics, Calculus, and General Math.</p>
+                            <button class="btn btn-outline-info w-100 rounded-pill fw-semibold">Choose Mathematics</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="glass-card p-4 subject-card science-card text-center h-100" id="cardScience" onclick="selectSubject('Science')">
+                            <div class="rounded-circle bg-success bg-opacity-10 p-3 d-inline-block text-success fs-2 mb-3">
+                                <i class="fa-solid fa-microscope"></i>
+                            </div>
+                            <h3 class="h4 fw-bold mb-2">Science</h3>
+                            <p class="text-muted mb-4">Generates materials for Biology, Chemistry, Physics, Earth & Space Sciences.</p>
+                            <button class="btn btn-outline-success w-100 rounded-pill fw-semibold">Choose Science</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. AI Features Suite Hub -->
+            <section id="features" class="mb-5 pt-4">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold"><span class="step-badge">2</span>SciMatika Feature Suite</h2>
+                    <p class="text-muted">Access dedicated Gemini AI gems and interactive generators.</p>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    <!-- ILAW Gem -->
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 feature-card ilaw-highlight h-100 text-center d-flex flex-column justify-content-between" onclick="openGem('ILAW', event)">
+                            <div>
+                                <div class="fs-1 mb-2">📖</div>
+                                <span class="badge bg-info text-dark mb-2">Gemini Gem</span>
+                                <h4 class="h5 fw-bold text-info">ILAW Lesson Planner</h4>
+                                <p class="text-muted small">Generates complete Intentions, Learning Experience, Assessing Learning, and Ways Forward modules.</p>
+                            </div>
+                            <button class="btn btn-sm btn-outline-info w-100 mt-3 rounded-pill">Launch ILAW Gem <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PowerPoint Gem -->
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 feature-card ppt-highlight h-100 text-center d-flex flex-column justify-content-between" onclick="openGem('PPT', event)">
+                            <div>
+                                <div class="fs-1 text-warning mb-2"><i class="fa-solid fa-file-powerpoint"></i></div>
+                                <span class="badge bg-warning text-dark mb-2">Gemini Gem</span>
+                                <h4 class="h5 fw-bold text-warning">PowerPoint Maker</h4>
+                                <p class="text-muted small">Creates slide-by-slide titles, key bullet points, visual layout prompts, and speaker notes.</p>
+                            </div>
+                            <button class="btn btn-sm btn-outline-warning w-100 mt-3 rounded-pill">Launch PPT Gem <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Activity Suite -->
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 feature-card activity-highlight h-100 text-center d-flex flex-column justify-content-between" onclick="document.getElementById('activity-suite').scrollIntoView({behavior:'smooth'})">
+                            <div>
+                                <div class="fs-1 text-success mb-2"><i class="fa-solid fa-dice-d20"></i></div>
+                                <span class="badge bg-success text-dark mb-2">Interactive App</span>
+                                <h4 class="h5 fw-bold text-success">Interactive Activity Suite</h4>
+                                <p class="text-muted small">Browse ready-made classroom games, digital simulations, and interactive STEM quizzes.</p>
+                            </div>
+                            <button class="btn btn-sm btn-gradient-success w-100 mt-3 rounded-pill">Explore Activities</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Parameter Generator Form -->
+            <section id="generator" class="mb-5 pt-4">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold"><span class="step-badge">3</span>In-App AI Package Generator</h2>
+                    <p class="text-muted">Define parameters or upload a lesson draft to instantly generate materials.</p>
+                </div>
+
+                <div class="glass-card p-4 p-md-5 mx-auto" style="max-width: 900px;">
+                    <!-- File Upload Optional -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold mb-2"><i class="fa-solid fa-cloud-arrow-up text-info me-2"></i>Quick Start: Upload Lesson File (Optional)</label>
+                        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                            <i class="fa-solid fa-file-contract fs-2 text-info mb-2"></i>
+                            <p class="mb-1 fw-semibold">Click or drag & drop lesson document (DOCX, PDF, TXT)</p>
+                            <small class="text-muted">Auto-extracts topic, competencies, and targets.</small>
+                            <input type="file" id="fileInput" accept=".docx,.pdf,.txt" style="display:none" onchange="handleFileUpload(event)">
+                        </div>
+                        <div id="uploadStatus" class="mt-2 text-center text-info fw-semibold" style="display: none;"></div>
+                    </div>
+
+                    <hr class="border-secondary my-4">
+
+                    <form id="parameterForm" onsubmit="event.preventDefault();">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Grade Level <span class="text-danger">*</span></label>
+                                <select class="form-select" id="gradeLevel" required>
+                                    <option value="" selected disabled>Select Grade</option>
+                                    <option value="Grade 7">Grade 7</option>
+                                    <option value="Grade 8">Grade 8</option>
+                                    <option value="Grade 9">Grade 9</option>
+                                    <option value="Grade 10">Grade 10</option>
+                                    <option value="Grade 11">Grade 11</option>
+                                    <option value="Grade 12">Grade 12</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Learning Area <span class="text-danger">*</span></label>
+                                <select class="form-select" id="learningArea" required>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Quarter <span class="text-danger">*</span></label>
+                                <select class="form-select" id="quarter" required>
+                                    <option value="Quarter 1">Quarter 1</option>
+                                    <option value="Quarter 2">Quarter 2</option>
+                                    <option value="Quarter 3">Quarter 3</option>
+                                    <option value="Quarter 4">Quarter 4</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Topic / Lesson Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="topic" placeholder="e.g., Quadratic Functions or Photosynthesis" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Learning Competency (MELC) <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="competency" rows="2" placeholder="e.g., Models real-world situations using quadratic functions." required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-gradient-primary btn-lg px-5" onclick="generatePackage()">
+                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate Package
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="aiLoader" class="text-center my-5 py-4" style="display: none;">
+                <div class="spinner-border text-info mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+                <h4 class="fw-bold" id="loaderStepText">SciMatika AI is processing...</h4>
+                <p class="text-muted">constructing ILAW guides, presentation slides, and activities.</p>
+            </div>
+
+            <!-- Output Display -->
+            <section id="aiOutput" class="mb-5 pt-4" style="display: none;">
+                <div class="glass-card p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pb-3 border-bottom border-secondary">
+                        <ul class="nav nav-pills output-nav-pills gap-2" role="tablist">
+                            <li class="nav-item">
+                                <button class="nav-link active" id="tab-ilaw-btn" data-bs-toggle="pill" data-bs-target="#tab-ilaw">ILAW Plan</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="tab-ppt-btn" data-bs-toggle="pill" data-bs-target="#tab-ppt">PPT Deck</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="tab-act-btn" data-bs-toggle="pill" data-bs-target="#tab-act">Activity Blueprint</button>
+                            </li>
+                        </ul>
+                        <button class="btn btn-outline-info rounded-pill btn-sm" onclick="alert('Exporting full package...')"><i class="fa-solid fa-download me-1"></i> Export DOCX/PDF</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <!-- Tab 1: ILAW -->
+                        <div class="tab-pane fade show active" id="tab-ilaw">
+                            <h3 class="h4 fw-bold text-info mb-3" id="outLessonTitle">Lesson Title</h3>
+                            <div class="p-3 mb-3 rounded-3" style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid var(--primary-math);">
+                                <h5 class="fw-bold text-info">I - INTENTIONS</h5>
+                                <p class="small text-light" id="outCompetency"></p>
+                            </div>
+                            <div class="p-3 mb-3 rounded-3" style="background: rgba(99, 102, 241, 0.08); border-left: 4px solid #6366f1;">
+                                <h5 class="fw-bold text-primary">L - LEARNING EXPERIENCE</h5>
+                                <div class="small" id="outLearningExp"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: PPT -->
+                        <div class="tab-pane fade" id="tab-ppt">
+                            <h3 class="h4 fw-bold text-warning mb-3">PowerPoint Presentation Outline</h3>
+                            <div class="row g-3" id="outPptContainer"></div>
+                        </div>
+
+                        <!-- Tab 3: Activity -->
+                        <div class="tab-pane fade" id="tab-act">
+                            <h3 class="h4 fw-bold text-success mb-3" id="outActTitle">Classroom Activity Blueprint</h3>
+                            <div id="outActBody" class="small"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Interactive Activity Suite Section -->
+            <section id="activity-suite" class="mb-5 pt-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom border-secondary">
+                    <div>
+                        <h2 class="fw-bold m-0"><span class="step-badge">4</span>Interactive STEM Activity Dashboard</h2>
+                        <p class="text-muted m-0">Ready-to-use digital activities, quizzes, and simulations for the classroom.</p>
+                    </div>
+                    <button class="btn btn-outline-info btn-sm rounded-pill" onclick="openAiGeneratorModal()">
+                        <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Generate AI Activity
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" id="activity-search-input" class="form-control bg-dark text-light border-secondary" placeholder="Search ready-made activities..." oninput="filterActivities()">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="grade-filter" class="form-select bg-dark text-light border-secondary" onchange="filterActivities()">
+                            <option value="all">All Grade Levels</option>
+                            <option value="Middle School">Middle School</option>
+                            <option value="High School">High School</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="type-filter" class="form-select bg-dark text-light border-secondary" onchange="filterActivities()">
+                            <option value="all">All Activity Types</option>
+                            <option value="Game">Interactive Game</option>
+                            <option value="Simulation">Simulation / Lab</option>
+                            <option value="Quiz">Interactive Quiz</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Activity Cards Grid -->
+                <div class="row g-4" id="activities-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Activity Preview Modal -->
+    <div class="modal fade" id="activityModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title fw-bold text-info" id="modalActivityTitle">Activity Title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex gap-2 mb-3">
+                        <span class="badge bg-secondary" id="modalActivityGrade">Grade</span>
+                        <span class="badge bg-info text-dark" id="modalActivityType">Type</span>
+                        <span class="badge bg-dark border border-secondary text-muted" id="modalActivityTopic">Topic</span>
+                    </div>
+                    <p class="text-muted" id="modalActivityDesc"></p>
+
+                    <div class="interactive-preview-box my-3" id="interactiveContainer"></div>
+                </div>
+                <div class="modal-footer border-secondary justify-content-between">
+                    <small class="text-muted"><i class="fa-solid fa-circle-check text-success me-1"></i> Interactive Runner Active</small>
+                    <button type="button" class="btn btn-info btn-sm text-dark fw-semibold" data-bs-dismiss="modal">Close Preview</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Custom Activity Prompt Modal -->
+    <div class="modal fade" id="aiGeneratorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title fw-bold text-info"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Custom Activity</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">Describe a STEM topic or concept to create a custom interactive activity.</p>
+                    <textarea class="form-control bg-dark text-light border-secondary" rows="3" placeholder="e.g. Build a drag-and-drop matching game for cell organelles and their functions."></textarea>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-info btn-sm text-dark fw-semibold" onclick="alert('Custom AI Activity Generator initialized!')">Generate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redirect Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="redirectToast" class="toast align-items-center text-bg-dark border-info" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-3">
+                    <i class="fa-solid fa-spinner fa-spin text-info fs-4" id="toastSpinner"></i>
+                    <div>
+                        <strong class="d-block text-info" id="toastTitle">Opening Gemini Gem...</strong>
+                        <small class="text-muted" id="toastSub">Redirecting in a new tab.</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Application Script -->
+    <script>
+        // Gemini Gem Targets
+        const GEM_URLS = {
+            ILAW: 'https://gemini.google.com/gem/98de41527690',
+            PPT: 'https://gemini.google.com/gem/1_0R_ZSC3fNkaj1PyB5qCyONEwAW8jTHb?usp=sharing'
+        };
+
+        // State Store
+        const state = {
+            subject: 'Mathematics',
+            learningAreaOptions: {
+                Mathematics: ['General Mathematics', 'Algebra', 'Geometry', 'Statistics and Probability', 'Calculus'],
+                Science: ['Biology', 'Chemistry', 'Physics', 'Earth & Space Science']
+            }
+        };
+
+        // Ready-Made Interactive Activities Database
+        const ACTIVITIES_DATABASE = [
+            {
+                id: 'm1',
+                title: 'Quadratic Equation Drag-and-Drop Match',
+                subject: 'Mathematics',
+                grade: 'High School',
+                type: 'Game',
+                topic: 'Algebra',
+                description: 'Interactive matching game connecting quadratic functions with vertex forms and roots.',
+                demoType: 'match'
+            },
+            {
+                id: 'm2',
+                title: 'Fraction Visualizer & Equivalent Slices',
+                subject: 'Mathematics',
+                grade: 'Middle School',
+                type: 'Simulation',
+                topic: 'Arithmetic',
+                description: 'Manipulate virtual pie slices to compare equivalent fractions visually in real-time.',
+                demoType: 'counter'
+            },
+            {
+                id: 'm3',
+                title: 'Pythagorean Theorem Right-Triangle Explorer',
+                subject: 'Mathematics',
+                grade: 'Middle School',
+                type: 'Simulation',
+                topic: 'Geometry',
+                description: 'Adjust side lengths to dynamically observe hypotenuse calculations and geometric proofs.',
+                demoType: 'triangle'
+            },
+            {
+                id: 's1',
+                title: 'Photosynthesis vs. Respiration Reaction Sorting',
+                subject: 'Science',
+                grade: 'Middle School',
+                type: 'Game',
+                topic: 'Biology',
+                description: 'Drag reactants and products into plant chloroplasts or cell mitochondria.',
+                demoType: 'match'
+            },
+            {
+                id: 's2',
+                title: 'Interactive Periodic Table Element Explorer',
+                subject: 'Science',
+                grade: 'High School',
+                type: 'Simulation',
+                topic: 'Chemistry',
+                description: 'Explore atomic structures, electron shells, and element reactivity visually.',
+                demoType: 'counter'
+            }
+        ];
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            selectSubject('Mathematics');
+            renderActivities(ACTIVITIES_DATABASE);
+        });
+
+        // Redirect Handler for Gemini Gems
+        function openGem(type, event) {
+            if (event) event.stopPropagation();
+
+            const toastTitle = document.getElementById('toastTitle');
+            const toastToast = document.getElementById('redirectToast');
+            const toastSpinner = document.getElementById('toastSpinner');
+
+            if (type === 'PPT') {
+                toastTitle.textContent = "Opening PowerPoint Maker Gem...";
+                toastTitle.className = "d-block text-warning";
+                toastToast.className = "toast align-items-center text-bg-dark border-warning";
+                toastSpinner.className = "fa-solid fa-spinner fa-spin text-warning fs-4";
+            } else {
+                toastTitle.textContent = "Opening 📖 ILAW Lesson Planner...";
+                toastTitle.className = "d-block text-info";
+                toastToast.className = "toast align-items-center text-bg-dark border-info";
+                toastSpinner.className = "fa-solid fa-spinner fa-spin text-info fs-4";
+            }
+
+            const toast = new bootstrap.Toast(toastToast);
+            toast.show();
+
+            setTimeout(() => {
+                window.open(GEM_URLS[type], '_blank', 'noopener,noreferrer');
+            }, 500);
+        }
+
+        // Subject Track Switcher
+        function selectSubject(subj) {
+            state.subject = subj;
+            const mathCard = document.getElementById('cardMath');
+            const scienceCard = document.getElementById('cardScience');
+            const selectArea = document.getElementById('learningArea');
+
+            if (subj === 'Mathematics') {
+                mathCard.classList.add('active');
+                scienceCard.classList.remove('active');
+            } else {
+                scienceCard.classList.add('active');
+                mathCard.classList.remove('active');
+            }
+
+            selectArea.innerHTML = '<option value="" selected disabled>Select Learning Area</option>';
+            state.learningAreaOptions[subj].forEach(area => {
+                const opt = document.createElement('option');
+                opt.value = area;
+                opt.textContent = area;
+                selectArea.appendChild(opt);
+            });
+
+            filterActivities();
+        }
+
+        // File Parsing Simulation
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const status = document.getElementById('uploadStatus');
+            status.style.display = 'block';
+            status.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i> Parsing ${file.name}...`;
+
+            setTimeout(() => {
+                status.innerHTML = `<i class="fa-solid fa-circle-check text-success me-2"></i> File parsed successfully!`;
+                document.getElementById('gradeLevel').value = 'Grade 10';
+                document.getElementById('learningArea').value = state.subject === 'Mathematics' ? 'Algebra' : 'Biology';
+                document.getElementById('topic').value = state.subject === 'Mathematics' ? 'Quadratic Functions' : 'Cellular Respiration';
+                document.getElementById('competency').value = 'Models real-world situations and derives key equations.';
+            }, 1000);
+        }
+
+        // Package Generator Process
+        function generatePackage() {
+            const grade = document.getElementById('gradeLevel').value;
+            const area = document.getElementById('learningArea').value;
+            const topic = document.getElementById('topic').value;
+            const competency = document.getElementById('competency').value;
+
+            if (!grade || !area || !topic || !competency) {
+                alert('Please complete all required fields.');
+                return;
+            }
+
+            const loader = document.getElementById('aiLoader');
+            const output = document.getElementById('aiOutput');
+            output.style.display = 'none';
+            loader.style.display = 'block';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+                
+                document.getElementById('outLessonTitle').textContent = `${topic} (${grade})`;
+                document.getElementById('outCompetency').textContent = competency;
+                document.getElementById('outLearningExp').innerHTML = `<p>1. <strong>Hook:</strong> Introduce real-life scenarios related to ${topic}.</p><p>2. <strong>Guided Practice:</strong> Step-by-step problem breakdown.</p>`;
+                
+                document.getElementById('outPptContainer').innerHTML = `
+                    <div class="col-md-6"><div class="glass-card p-3 border border-secondary"><h5>Slide 1: Introduction</h5><p class="small text-muted">Overview of ${topic}.</p></div></div>
+                    <div class="col-md-6"><div class="glass-card p-3 border border-secondary"><h5>Slide 2: Core Principles</h5><p class="small text-muted">Key definitions and formulas.</p></div></div>
+                `;
+
+                document.getElementById('outActTitle').textContent = `Activity: ${topic} Interactive Challenge`;
+                document.getElementById('outActBody').innerHTML = `<p>Group challenge designed to reinforce <strong>${topic}</strong> through gamified stations.</p>`;
+
+                output.style.display = 'block';
+                output.scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+
+        // Activity Dashboard Filter
+        function filterActivities() {
+            const query = document.getElementById('activity-search-input').value.toLowerCase();
+            const gradeFilter = document.getElementById('grade-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+
+            const filtered = ACTIVITIES_DATABASE.filter(act => {
+                const matchesSubject = act.subject === state.subject;
+                const matchesQuery = act.title.toLowerCase().includes(query) || act.topic.toLowerCase().includes(query);
+                const matchesGrade = gradeFilter === 'all' || act.grade === gradeFilter;
+                const matchesType = typeFilter === 'all' || act.type === typeFilter;
+                return matchesSubject && matchesQuery && matchesGrade && matchesType;
+            });
+
+            renderActivities(filtered);
+        }
+
+        // Render Activity Cards
+        function renderActivities(list) {
+            const container = document.getElementById('activities-grid');
+            if (!container) return;
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="col-12 text-center py-5 text-muted"><p>No interactive activities match your filter criteria.</p></div>`;
+                return;
+            }
+
+            container.innerHTML = list.map(act => `
+                <div class="col-md-4">
+                    <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge ${act.subject === 'Mathematics' ? 'bg-info text-dark' : 'bg-success text-dark'}">${act.subject}</span>
+                                <span class="badge bg-secondary">${act.grade}</span>
+                            </div>
+                            <h4 class="h5 fw-bold text-light mb-2">${act.title}</h4>
+                            <p class="text-muted small">${act.description}</p>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm w-100 mt-3 rounded-pill" onclick="launchActivityPreview('${act.id}')">
+                            <i class="fa-solid fa-play me-1"></i> Preview Activity
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Launch Preview Modal
+        function launchActivityPreview(id) {
+            const act = ACTIVITIES_DATABASE.find(a => a.id === id);
+            if (!act) return;
+
+            document.getElementById('modalActivityTitle').textContent = act.title;
+            document.getElementById('modalActivityGrade').textContent = act.grade;
+            document.getElementById('modalActivityType').textContent = act.type;
+            document.getElementById('modalActivityTopic').textContent = act.topic;
+            document.getElementById('modalActivityDesc').textContent = act.description;
+
+            const previewBox = document.getElementById('interactiveContainer');
+            previewBox.innerHTML = `
+                <div class="text-center py-3">
+                    <h5 class="fw-bold text-info mb-2"><i class="fa-solid fa-gamepad me-2"></i>${act.title}</h5>
+                    <p class="small text-muted mb-3">Interactive demo runner loaded for classroom presentation.</p>
+                    <button class="btn btn-sm btn-success rounded-pill px-4" onclick="alert('Demo interactive step triggered!')">
+                        <i class="fa-solid fa-circle-play me-1"></i> Run Interactive Step
+                    </button>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('activityModal'));
+            modal.show();
+        }
+
+        function openAiGeneratorModal() {
+            const modal = new bootstrap.Modal(document.getElementById('aiGeneratorModal'));
+            modal.show();
+        }
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arithmetic Sequence Adventure: Journey Through Santa Fe</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --primary-cyan: #06b6d4;
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-rose: #f43f5e;
+            --text-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0f172a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-font {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* --- HUD Bar --- */
+        .hud-bar {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+        }
+
+        .life-heart {
+            color: var(--accent-rose);
+            font-size: 1.3rem;
+            margin-right: 3px;
+            filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.6));
+            transition: transform 0.3s ease;
+        }
+
+        .progress {
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* --- Sequence Visualizer --- */
+        .sequence-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .seq-box {
+            width: 75px;
+            height: 75px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid var(--primary-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .seq-box.missing {
+            border-color: var(--accent-gold);
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 22px rgba(245, 158, 11, 0.6); }
+        }
+
+        /* --- Buttons --- */
+        .btn-custom {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .btn-cyan {
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-cyan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+            color: #fff;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+            color: #fff;
+        }
+
+        .btn-outline-custom {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            background: transparent;
+        }
+
+        .btn-outline-custom:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* --- Modals & Cards --- */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        .hint-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent-gold);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        /* Canvas Fireworks */
+        #fx-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Bonus Wheel */
+        #wheel-canvas {
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+        }
+
+        .wheel-pointer {
+            width: 0; 
+            height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid var(--accent-gold);
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+        }
+
+        /* Screen Transitions */
+        .game-screen {
+            display: none;
+        }
+
+        .game-screen.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Celebration Canvas -->
+        <canvas id="fx-canvas"></canvas>
+
+        <!-- Dynamic HUD (Active in gameplay screens) -->
+        <div id="hud" class="hud-bar d-none">
+            <div class="row align-items-center g-2 text-center text-md-start">
+                <div class="col-6 col-md-3">
+                    <span class="text-muted small d-block">SCORE</span>
+                    <span class="fw-bold text-warning brand-font fs-5" id="hud-score">⭐ 0</span>
+                </div>
+                <div class="col-6 col-md-3 text-end text-md-center">
+                    <span class="text-muted small d-block">LIVES</span>
+                    <div id="hud-lives">
+                        <i class="fa-solid fa-heart life-heart"></i>
+                        <i class="fa-solid fa-heart life-heart"></i>
+                        <i class="fa-solid fa-heart life-heart"></i>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <span class="text-muted small d-block">PROGRESS</span>
+                    <span class="fw-bold brand-font text-info" id="hud-level-indicator">Level 1 of 5</span>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="progress mt-1">
+                        <div class="progress-bar" id="hud-progress-bar" role="progressbar" style="width: 20%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. LANDING PAGE -->
+        <div id="screen-landing" class="game-screen active text-center py-4">
+            <div class="mb-3">
+                <span class="badge bg-info bg-opacity-20 text-info px-3 py-2 rounded-pill fw-semibold">
+                    <i class="fa-solid fa-brain me-1"></i> SciMatika Interactive Game Suite
+                </span>
+            </div>
+            <h1 class="display-5 fw-extrabold brand-font text-light mb-2">Arithmetic Sequence Adventure</h1>
+            <p class="h5 text-info mb-4">Journey Through Santa Fe, Romblon</p>
+            
+            <div class="my-4 py-3 glass-card mx-auto" style="max-width: 450px;">
+                <i class="fa-solid fa-map-location-dot fs-1 text-warning mb-3"></i>
+                <p class="text-muted mb-0 small">Explore local landmarks, solve sequence puzzles, and earn badges across 5 exciting destinations!</p>
+            </div>
+
+            <div class="d-flex flex-column gap-3 align-items-center mt-4">
+                <button class="btn btn-cyan btn-custom w-100" style="max-width: 320px;" onclick="goToScreen('screen-story')">
+                    <i class="fa-solid fa-play me-2"></i> Start Adventure
+                </button>
+                <div class="d-flex gap-2 w-100 justify-content-center" style="max-width: 320px;">
+                    <button class="btn btn-outline-custom btn-custom flex-grow-1" data-bs-toggle="modal" data-bs-target="#howToPlayModal">
+                        📖 How to Play
+                    </button>
+                    <button class="btn btn-outline-custom btn-custom flex-grow-1" data-bs-toggle="modal" data-bs-target="#achievementsModal">
+                        🏆 Badges
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. STORY INTRODUCTION -->
+        <div id="screen-story" class="game-screen py-3">
+            <div class="text-center mb-4">
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-1 fw-bold">THE MISSION</span>
+                <h2 class="brand-font mt-2">Welcome, Explorer!</h2>
+            </div>
+            <div class="glass-card p-4 mb-4">
+                <p class="lead text-light mb-3">
+                    You are a young explorer traveling across the beautiful municipality of <strong>Santa Fe, Romblon</strong>.
+                </p>
+                <p class="text-muted">
+                    Every landmark contains a mathematical mystery governed by arithmetic sequences. Solve each challenge to continue your journey. Be careful—you only have <strong>3 lives</strong> to complete all 5 locations!
+                </p>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-cyan btn-custom" onclick="goToScreen('screen-objectives')">
+                    Continue <i class="fa-solid fa-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. LEARNING OBJECTIVES -->
+        <div id="screen-objectives" class="game-screen py-3">
+            <div class="text-center mb-4">
+                <span class="badge bg-info text-dark rounded-pill px-3 py-1 fw-bold">OBJECTIVES</span>
+                <h2 class="brand-font mt-2">Learning Targets</h2>
+            </div>
+            <div class="glass-card p-4 mb-4">
+                <p class="text-muted mb-3">At the end of this adventure, you should be able to:</p>
+                <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
+                    <li class="d-flex align-items-center"><i class="fa-solid fa-circle-check text-info me-3 fs-5"></i> Identify arithmetic sequences.</li>
+                    <li class="d-flex align-items-center"><i class="fa-solid fa-circle-check text-info me-3 fs-5"></i> Determine the common difference ($d$).</li>
+                    <li class="d-flex align-items-center"><i class="fa-solid fa-circle-check text-info me-3 fs-5"></i> Find missing terms in sequences.</li>
+                    <li class="d-flex align-items-center"><i class="fa-solid fa-circle-check text-info me-3 fs-5"></i> Apply arithmetic sequences to real-life situations in Santa Fe.</li>
+                </ul>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-cyan btn-custom" onclick="goToScreen('screen-rules')">
+                    Start Mission <i class="fa-solid fa-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. GAME INSTRUCTIONS -->
+        <div id="screen-rules" class="game-screen py-3">
+            <div class="text-center mb-4">
+                <span class="badge bg-danger text-light rounded-pill px-3 py-1 fw-bold">RULES OF THE ROAD</span>
+                <h2 class="brand-font mt-2">Game Instructions</h2>
+            </div>
+            <div class="glass-card p-4 mb-4">
+                <div class="row g-3">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <i class="fa-solid fa-heart text-danger fs-3 me-3"></i>
+                        <div><strong>3 Lives:</strong> You start with 3 hearts. Wrong answers cost 1 life.</div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <i class="fa-solid fa-star text-warning fs-3 me-3"></i>
+                        <div><strong>10 Points:</strong> Earn 10 points for every correctly solved level.</div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <i class="fa-solid fa-lightbulb text-info fs-3 me-3"></i>
+                        <div><strong>Progressive Hints:</strong> Get helpful hints when you hit a roadblock.</div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <i class="fa-solid fa-trophy text-success fs-3 me-3"></i>
+                        <div><strong>Victory:</strong> Finish all 5 levels to unlock the Champion title!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-gold btn-custom px-5" onclick="startGame()">
+                    <i class="fa-solid fa-compass me-2"></i> Begin Adventure
+                </button>
+            </div>
+        </div>
+
+        <!-- 5. LEVEL GAMEPLAY SCREEN -->
+        <div id="screen-gameplay" class="game-screen">
+            <div class="text-center mb-3">
+                <span class="badge bg-info bg-opacity-20 text-info px-3 py-1 rounded-pill brand-font" id="level-location-tag">LOCATION</span>
+                <h2 class="brand-font mt-2 mb-1" id="level-title">Level Title</h2>
+                <p class="text-muted small mx-auto" style="max-width: 600px;" id="level-scenario">Scenario description goes here...</p>
+            </div>
+
+            <!-- Sequence Display -->
+            <div class="sequence-container" id="sequence-boxes">
+                <!-- Injected dynamically -->
+            </div>
+
+            <!-- Answer Section -->
+            <div class="glass-card text-center p-4 mx-auto mb-3" style="max-width: 500px;">
+                <label for="user-answer-input" class="form-label fw-bold mb-2">Find the missing number:</label>
+                <div class="input-group justify-content-center mb-3" style="max-width: 280px; margin: 0 auto;">
+                    <input type="number" id="user-answer-input" class="form-control form-control-lg text-center fw-bold brand-font bg-dark text-light border-info" placeholder="?" autocomplete="off">
+                    <button class="btn btn-cyan px-4" onclick="submitAnswer()">Submit</button>
+                </div>
+                
+                <!-- Hint Section -->
+                <div id="hint-container" class="hint-box d-none text-start">
+                    <div class="d-flex align-items-center gap-2 mb-1 text-warning fw-bold small">
+                        <i class="fa-solid fa-lightbulb"></i> <span id="hint-title">HINT 1</span>
+                    </div>
+                    <p class="small mb-0 text-light" id="hint-text">Hint content goes here...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL SUCCESS MODAL / OVERLAY -->
+        <div id="screen-level-success" class="game-screen text-center py-4">
+            <div class="mb-3">
+                <i class="fa-solid fa-circle-check text-success display-1"></i>
+            </div>
+            <h2 class="brand-font text-success mb-2">Excellent Explorer!</h2>
+            <p class="lead text-light mb-2" id="success-message">You discovered the common difference!</p>
+            <p class="text-warning brand-font fs-4 mb-4">+10 Points ⭐</p>
+
+            <button class="btn btn-cyan btn-custom px-5" id="btn-next-level" onclick="nextLevel()">
+                Next Destination <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+        </div>
+
+        <!-- 6. GAME OVER SCREEN -->
+        <div id="screen-gameover" class="game-screen text-center py-4">
+            <div class="mb-3">
+                <i class="fa-solid fa-skull-crossbones text-danger display-1"></i>
+            </div>
+            <h2 class="brand-font text-danger mb-2">Game Over</h2>
+            <p class="text-muted mb-4">Don't give up! Every mathematician learns through practice.</p>
+
+            <div class="glass-card p-4 mx-auto mb-4" style="max-width: 400px;">
+                <p class="text-muted mb-1">Final Score</p>
+                <h3 class="brand-font text-warning display-6 mb-0" id="gameover-score">0 Points</h3>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3">
+                <button class="btn btn-cyan btn-custom" onclick="restartGame()">
+                    <i class="fa-solid fa-rotate-right me-2"></i> Play Again
+                </button>
+                <button class="btn btn-outline-custom btn-custom" onclick="goToScreen('screen-landing')">
+                    Exit
+                </button>
+            </div>
+        </div>
+
+        <!-- 7. VICTORY SCREEN -->
+        <div id="screen-victory" class="game-screen text-center py-4">
+            <div class="mb-3">
+                <i class="fa-solid fa-trophy text-warning display-1"></i>
+            </div>
+            <h2 class="brand-font text-warning mb-2">🏆 Congratulations!</h2>
+            <p class="lead text-light mb-4">You completed the Arithmetic Sequence Adventure across Santa Fe!</p>
+
+            <div class="glass-card p-4 mx-auto mb-4" style="max-width: 480px;">
+                <div class="row g-3 text-center">
+                    <div class="col-6">
+                        <small class="text-muted d-block">FINAL SCORE</small>
+                        <span class="brand-font text-warning fs-3" id="victory-score">50 Points</span>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted d-block">LIVES REMAINING</small>
+                        <span class="brand-font text-danger fs-3" id="victory-lives">❤️❤️❤️</span>
+                    </div>
+                    <div class="col-12 border-top border-secondary pt-3 mt-3">
+                        <small class="text-muted d-block mb-1">BADGE EARNED</small>
+                        <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill">🥇 Arithmetic Sequence Champion</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <button class="btn btn-gold btn-custom" onclick="goToScreen('screen-wheel')">
+                    🎡 Spin Bonus Wheel
+                </button>
+                <button class="btn btn-cyan btn-custom" onclick="restartGame()">
+                    🔄 Play Again
+                </button>
+                <button class="btn btn-outline-custom btn-custom" onclick="goToScreen('screen-landing')">
+                    🏠 Home
+                </button>
+            </div>
+        </div>
+
+        <!-- 8. BONUS WHEEL SCREEN -->
+        <div id="screen-wheel" class="game-screen text-center py-3">
+            <h2 class="brand-font text-warning mb-1">🎡 Bonus Victory Wheel</h2>
+            <p class="text-muted small mb-4">Spin the wheel to claim an extra reward!</p>
+
+            <div class="position-relative d-inline-block mb-4">
+                <div class="wheel-pointer"></div>
+                <canvas id="wheel-canvas" width="300" height="300"></canvas>
+            </div>
+
+            <div>
+                <button class="btn btn-gold btn-custom px-5" id="btn-spin" onclick="spinWheel()">
+                    Spin Now!
+                </button>
+            </div>
+        </div>
+
+        <!-- 9. MYSTERY CHALLENGE SCREEN -->
+        <div id="screen-mystery" class="game-screen py-3">
+            <div class="text-center mb-3">
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-1 fw-bold">SPECIAL BONUS</span>
+                <h2 class="brand-font mt-2">Santa Fe Tricycle Route Challenge</h2>
+            </div>
+
+            <div class="glass-card p-4 mb-4">
+                <p class="text-light mb-3">
+                    Tricycle fares in Santa Fe cost <strong>₱15</strong> for the 1st kilometer, <strong>₱20</strong> for the 2nd kilometer, <strong>₱25</strong> for the 3rd kilometer, and so on.
+                </p>
+                <p class="fw-bold text-info text-center">How much will a 6-kilometer ride cost?</p>
+                <div class="sequence-container my-3">
+                    <div class="seq-box">15</div>
+                    <div class="seq-box">20</div>
+                    <div class="seq-box">25</div>
+                    <div class="seq-box">30</div>
+                    <div class="seq-box">35</div>
+                    <div class="seq-box missing">?</div>
+                </div>
+
+                <div class="input-group justify-content-center" style="max-width: 280px; margin: 0 auto;">
+                    <input type="number" id="mystery-input" class="form-control form-control-lg text-center fw-bold brand-font bg-dark text-light border-warning" placeholder="₱ Fare">
+                    <button class="btn btn-gold px-4" onclick="submitMysteryAnswer()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOW TO PLAY MODAL -->
+    <div class="modal fade" id="howToPlayModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title brand-font text-info">📖 How to Play</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body small text-muted">
+                    <p>1. Observe the numbers in each sequence carefully.</p>
+                    <p>2. Calculate the common difference ($d$) by finding the change between consecutive numbers.</p>
+                    <p>3. Enter the correct missing term to complete the sequence and move to the next landmark.</p>
+                    <p>4. Use hints if you get stuck, but watch your lives!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACHIEVEMENTS MODAL -->
+    <div class="modal fade" id="achievementsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title brand-font text-warning">🏆 Achievements & Badges</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center gap-3 glass-card p-3 mb-2">
+                        <div class="fs-1 text-warning">🥇</div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-light">Arithmetic Sequence Champion</h6>
+                            <small class="text-muted">Complete all 5 levels in Santa Fe, Romblon.</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 glass-card p-3">
+                        <div class="fs-1 text-info">🏅</div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-light">Santa Fe Local Explorer</h6>
+                            <small class="text-muted">Solve the optional Mystery Challenge fare problem.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Game Engine Logic -->
+    <script>
+        // --- LEVEL DATA ---
+        const LEVELS = [
+            {
+                id: 1,
+                title: "Level 1 – Santa Fe Beach",
+                location: "SANTA FE BEACH",
+                scenario: "The cottages along Santa Fe Beach are numbered following an arithmetic pattern.",
+                sequence: [2, 5, 8, "?", 14],
+                answer: 11,
+                diff: "+3",
+                explanation: "Excellent! You discovered the common difference of +3.",
+                hints: [
+                    "Find the difference between the first two numbers (5 - 2).",
+                    "The same number (+3) is added to each term.",
+                    "Add 3 to 8 to get the missing cottage number!"
+                ]
+            },
+            {
+                id: 2,
+                title: "Level 2 – Fishing Port",
+                location: "SANTA FE FISHING PORT",
+                scenario: "Fishing boats arrive at the dock every hour following a sequence pattern.",
+                sequence: [10, 15, 20, "?", 30],
+                answer: 25,
+                diff: "+5",
+                explanation: "Great job! You discovered the common difference of +5.",
+                hints: [
+                    "Look for repeated addition between 10, 15, and 20.",
+                    "Each arrival time increases by 5.",
+                    "Add 5 to 20 to find when the next boat arrives."
+                ]
+            },
+            {
+                id: 3,
+                title: "Level 3 – Public Market",
+                location: "PUBLIC MARKET",
+                scenario: "Fish baskets decrease every hour as customers buy fresh catch.",
+                sequence: [100, 90, 80, "?", 60],
+                answer: 70,
+                diff: "-10",
+                explanation: "Awesome! You discovered the common difference of -10.",
+                hints: [
+                    "Notice that the numbers are decreasing.",
+                    "Find the difference between 100 and 90.",
+                    "Subtract 10 from 80 to determine the missing baskets."
+                ]
+            },
+            {
+                id: 4,
+                title: "Level 4 – Coconut Plantation",
+                location: "COCONUT PLANTATION",
+                scenario: "Rows of coconut trees are planted with equal spacing across the field.",
+                sequence: [7, 12, 17, "?", 27],
+                answer: 22,
+                diff: "+5",
+                explanation: "Fantastic! You discovered the common difference of +5.",
+                hints: [
+                    "Determine the common difference first (12 - 7).",
+                    "Add the common difference (+5) to the third term.",
+                    "17 + 5 gives the missing number of trees."
+                ]
+            },
+            {
+                id: 5,
+                title: "Level 5 – Sta. Fe Senior High School",
+                location: "STA. FE SENIOR HIGH SCHOOL",
+                scenario: "Math contest scores follow a strict arithmetic sequence.",
+                sequence: [50, 45, 40, "?", 30],
+                answer: 35,
+                diff: "-5",
+                explanation: "Victory! You discovered the common difference of -5.",
+                hints: [
+                    "The scores are going down steadily.",
+                    "Calculate 50 minus 45.",
+                    "Subtract 5 from 40 to unlock the victory score!"
+                ]
+            }
+        ];
+
+        // --- GAME STATE ---
+        let state = {
+            score: 0,
+            lives: 3,
+            currentLevelIdx: 0,
+            wrongsInCurrentLevel: 0,
+            wheelSpun: false
+        };
+
+        // DOM elements
+        const hud = document.getElementById('hud');
+        const hudScore = document.getElementById('hud-score');
+        const hudLives = document.getElementById('hud-lives');
+        const hudLevelIndicator = document.getElementById('hud-level-indicator');
+        const hudProgressBar = document.getElementById('hud-progress-bar');
+
+        // Initialize Game
+        document.addEventListener('DOMContentLoaded', () => {
+            initWheel();
+        });
+
+        function goToScreen(screenId) {
+            document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+
+            // Toggle HUD visibility
+            if (['screen-gameplay', 'screen-level-success'].includes(screenId)) {
+                hud.classList.remove('d-none');
+            } else if (['screen-landing', 'screen-story', 'screen-objectives', 'screen-rules', 'screen-gameover', 'screen-victory', 'screen-wheel', 'screen-mystery'].includes(screenId)) {
+                hud.classList.add('d-none');
+            }
+        }
+
+        function updateHUD() {
+            hudScore.textContent = `⭐ ${state.score}`;
+            
+            // Render Hearts
+            let heartsHtml = '';
+            for (let i = 0; i < 3; i++) {
+                if (i < state.lives) {
+                    heartsHtml += '<i class="fa-solid fa-heart life-heart"></i>';
+                } else {
+                    heartsHtml += '<i class="fa-regular fa-heart life-heart opacity-25"></i>';
+                }
+            }
+            hudLives.innerHTML = heartsHtml;
+
+            hudLevelIndicator.textContent = `Level ${state.currentLevelIdx + 1} of 5`;
+            const pct = ((state.currentLevelIdx + 1) / 5) * 100;
+            hudProgressBar.style.width = `${pct}%`;
+        }
+
+        function startGame() {
+            state.score = 0;
+            state.lives = 3;
+            state.currentLevelIdx = 0;
+            state.wrongsInCurrentLevel = 0;
+            state.wheelSpun = false;
+
+            updateHUD();
+            loadLevel(0);
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        function loadLevel(idx) {
+            const level = LEVELS[idx];
+            state.wrongsInCurrentLevel = 0;
+
+            document.getElementById('level-location-tag').textContent = level.location;
+            document.getElementById('level-title').textContent = level.title;
+            document.getElementById('level-scenario').textContent = level.scenario;
+            document.getElementById('user-answer-input').value = '';
+            document.getElementById('hint-container').classList.add('d-none');
+
+            // Render Sequence Cards
+            const container = document.getElementById('sequence-boxes');
+            container.innerHTML = level.sequence.map(num => {
+                if (num === '?') {
+                    return `<div class="seq-box missing">?</div>`;
+                }
+                return `<div class="seq-box">${num}</div>`;
+            }).join('');
+
+            updateHUD();
+            goToScreen('screen-gameplay');
+
+            // Handle Enter Key press
+            const input = document.getElementById('user-answer-input');
+            input.focus();
+            input.onkeyup = (e) => {
+                if (e.key === 'Enter') submitAnswer();
+            };
+        }
+
+        function submitAnswer() {
+            const userVal = parseInt(document.getElementById('user-answer-input').value.trim());
+            const level = LEVELS[state.currentLevelIdx];
+
+            if (isNaN(userVal)) return;
+
+            if (userVal === level.answer) {
+                // CORRECT
+                state.score += 10;
+                updateHUD();
+                triggerFireworks();
+
+                document.getElementById('success-message').textContent = level.explanation;
+                goToScreen('screen-level-success');
+            } else {
+                // WRONG
+                state.lives--;
+                state.wrongsInCurrentLevel++;
+                updateHUD();
+
+                if (state.lives <= 0) {
+                    document.getElementById('gameover-score').textContent = `${state.score} Points`;
+                    goToScreen('screen-gameover');
+                } else {
+                    // Show progressive hint
+                    const hintContainer = document.getElementById('hint-container');
+                    const hintTitle = document.getElementById('hint-title');
+                    const hintText = document.getElementById('hint-text');
+
+                    const hintIdx = Math.min(state.wrongsInCurrentLevel - 1, 2);
+                    hintTitle.textContent = `HINT ${hintIdx + 1}`;
+                    hintText.textContent = level.hints[hintIdx];
+
+                    hintContainer.classList.remove('d-none');
+
+                    // Shake input
+                    const input = document.getElementById('user-answer-input');
+                    input.classList.add('is-invalid');
+                    setTimeout(() => input.classList.remove('is-invalid'), 600);
+                }
+            }
+        }
+
+        function nextLevel() {
+            state.currentLevelIdx++;
+            if (state.currentLevelIdx < LEVELS.length) {
+                loadLevel(state.currentLevelIdx);
+            } else {
+                // VICTORY
+                document.getElementById('victory-score').textContent = `${state.score} Points`;
+                
+                let heartsHtml = '';
+                for(let i=0; i<state.lives; i++) heartsHtml += '❤️';
+                document.getElementById('victory-lives').textContent = heartsHtml;
+
+                triggerFireworks();
+                goToScreen('screen-victory');
+            }
+        }
+
+        // --- BONUS WHEEL CANVAS ---
+        const wheelOptions = [
+            { label: "+20 Bonus", color: "#06b6d4", type: "score" },
+            { label: "Extra Life", color: "#f43f5e", type: "life" },
+            { label: "Special Badge", color: "#8b5cf6", type: "badge" },
+            { label: "Mystery Challenge", color: "#f59e0b", type: "mystery" }
+        ];
+
+        let startAngle = 0;
+        const arc = Math.PI / (wheelOptions.length / 2);
+
+        function initWheel() {
+            const canvas = document.getElementById('wheel-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0,0,300,300);
+            
+            for (let i = 0; i < wheelOptions.length; i++) {
+                const angle = startAngle + i * arc;
+                ctx.fillStyle = wheelOptions[i].color;
+                
+                ctx.beginPath();
+                ctx.arc(150, 150, 140, angle, angle + arc, false);
+                ctx.arc(150, 150, 0, angle + arc, angle, true);
+                ctx.fill();
+
+                ctx.save();
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 14px Poppins";
+                ctx.translate(150 + Math.cos(angle + arc / 2) * 90, 150 + Math.sin(angle + arc / 2) * 90);
+                ctx.rotate(angle + arc / 2 + Math.PI / 2);
+                ctx.fillText(wheelOptions[i].label, -ctx.measureText(wheelOptions[i].label).width / 2, 0);
+                ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if (state.wheelSpun) {
+                alert("You already spun the bonus wheel!");
+                return;
+            }
+
+            state.wheelSpun = true;
+            document.getElementById('btn-spin').disabled = true;
+
+            let spinTime = 0;
+            const spinTimeTotal = 3000;
+            const spinAngleStart = Math.random() * 10 + 25;
+
+            function rotateWheel() {
+                spinTime += 30;
+                if (spinTime >= spinTimeTotal) {
+                    stopRotateWheel();
+                    return;
+                }
+                const spinAngle = spinAngleStart - (spinTime / spinTimeTotal) * spinAngleStart;
+                startAngle += (spinAngle * Math.PI / 180);
+                initWheel();
+                requestAnimationFrame(rotateWheel);
+            }
+            rotateWheel();
+        }
+
+        function stopRotateWheel() {
+            const degrees = startAngle * 180 / Math.PI + 90;
+            const arcd = arc * 180 / Math.PI;
+            const index = Math.floor((360 - degrees % 360) / arcd) % wheelOptions.length;
+            const prize = wheelOptions[index];
+
+            setTimeout(() => {
+                if (prize.type === "mystery") {
+                    goToScreen('screen-mystery');
+                } else if (prize.type === "score") {
+                    alert("⭐ Landed on +20 Bonus Points!");
+                    state.score += 20;
+                    goToScreen('screen-victory');
+                } else if (prize.type === "life") {
+                    alert("❤️ Landed on Extra Life!");
+                    if (state.lives < 3) state.lives++;
+                    goToScreen('screen-victory');
+                } else {
+                    alert("🏅 Unlocked Special Santa Fe Badge!");
+                    goToScreen('screen-victory');
+                }
+            }, 300);
+        }
+
+        // --- MYSTERY CHALLENGE LOGIC ---
+        function submitMysteryAnswer() {
+            const ans = parseInt(document.getElementById('mystery-input').value.trim());
+            if (ans === 40) {
+                state.score += 20;
+                alert("🎉 Correct! You solved the Santa Fe Tricycle Fare puzzle (+20 Points)!");
+                triggerFireworks();
+                goToScreen('screen-victory');
+            } else {
+                alert("Oops! Think about how much the fare increases per kilometer ($d = +5$). Try again!");
+            }
+        }
+
+        // --- FIREWORKS CANVAS EFFECT ---
+        function triggerFireworks() {
+            const canvas = document.getElementById('fx-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            let particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    radius: Math.random() * 4 + 2,
+                    alpha: 1
+                });
+            }
+
+            function animateFx() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= 0.02;
+                    if (p.alpha > 0) {
+                        alive = true;
+                        ctx.save();
+                        ctx.globalAlpha = p.alpha;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                });
+                if (alive) requestAnimationFrame(animateFx);
+            }
+            animateFx();
+        }
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SciMatika | Interactive Classroom Activities</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --accent-purple: #a855f7;
+            --text-light: #f8fafc;
+            --text-dim: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Navigation Header */
+        nav {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--card-hover);
+            border-color: var(--accent-blue);
+        }
+
+        /* View Containers */
+        .view-section {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero / Landing View */
+        .hero-banner {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero-banner h1 {
+            font-size: 2.8rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .hero-banner span {
+            color: var(--accent-blue);
+        }
+
+        .hero-banner p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Feature Cards */
+        .clickable-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            background: var(--card-hover);
+            box-shadow: 0 10px 20px -5px rgba(56, 189, 248, 0.2);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: var(--text-dim);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-card {
+            background: var(--accent-blue);
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .clickable-card:hover .btn-card {
+            opacity: 0.9;
+        }
+
+        /* Layout Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* Page Headers */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--text-dim);
+        }
+
+        /* Game Elements (From Original Code) */
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            justify-content: space-around;
+        }
+
+        .stat-box { text-align: center; }
+        .stat-label { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--accent-blue); }
+
+        .game-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        .scenario-card {
+            background: #0f172a;
+            border-left: 5px solid var(--accent-red);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .scenario-header {
+            color: var(--accent-red);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .scenario-text { font-size: 1.15rem; line-height: 1.5; }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-organelle {
+            background: #334155;
+            color: var(--text-light);
+            border: 2px solid #475569;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-organelle:hover:not(:disabled) {
+            background: #475569;
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+
+        .btn-action {
+            background: transparent;
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-action:hover { background: rgba(234, 179, 8, 0.1); }
+
+        .feedback-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .feedback-correct {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid var(--accent-green);
+            color: #4ade80;
+        }
+
+        .feedback-wrong {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid var(--accent-red);
+            color: #f87171;
+        }
+
+        .btn-next {
+            background: var(--accent-blue);
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            display: none;
+            width: 100%;
+        }
+
+        .btn-next:hover { opacity: 0.9; }
+
+        .end-screen { text-align: center; display: none; }
+        .end-screen h2 { font-size: 2rem; color: var(--accent-green); margin-bottom: 10px; }
+
+        .badge-box {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid var(--accent-yellow);
+        }
+
+        .badge-title { color: var(--accent-yellow); font-size: 1.4rem; font-weight: bold; }
+        
+        .badge-disabled { opacity: 0.6; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Header -->
+    <nav>
+        <div class="brand" onclick="navigateTo('view-landing')">
+            🧪 SciMatika
+        </div>
+        <div class="nav-links">
+            <button class="btn-nav" onclick="navigateTo('view-landing')">Home</button>
+            <button class="btn-nav" onclick="navigateTo('view-subject-select')">Activities</button>
+        </div>
+    </nav>
+
+    <!-- PHASE 1: LANDING PAGE VIEW -->
+    <div id="view-landing" class="view-section active">
+        <div class="hero-banner">
+            <h1>Welcome to <span>SciMatika</span></h1>
+            <p>Empowering classroom learning through interactive Mathematics & Science simulations.</p>
+        </div>
+
+        <div class="grid-2">
+            <!-- Entire feature card is clickable -->
+            <div class="clickable-card" onclick="navigateTo('view-subject-select')">
+                <div>
+                    <div class="card-icon">🎮</div>
+                    <div class="card-title">Interactive Activities</div>
+                    <div class="card-desc">
+                        Explore engaging, curriculum-aligned interactive classroom activities for Mathematics and Science. Choose a subject and instantly access ready-made educational games and simulations.
+                    </div>
+                </div>
+                <button class="btn-card">Launch Interactive Activities &rarr;</button>
+            </div>
+
+            <div class="clickable-card" style="opacity: 0.7; cursor: default;">
+                <div>
+                    <div class="card-icon">📚</div>
+                    <div class="card-title">Curriculum Library</div>
+                    <div class="card-desc">
+                        Access detailed lesson plans, teacher guides, and printable student worksheets mapped to international STEM standards.
+                    </div>
+                </div>
+                <button class="btn-card" style="background: var(--border-color); color: var(--text-dim);" disabled>Coming Soon</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 2: SUBJECT SELECTION VIEW -->
+    <div id="view-subject-select" class="view-section">
+        <div class="page-header">
+            <h2>Choose Your Subject</h2>
+            <p>Select the subject to explore ready-made interactive classroom activities.</p>
+        </div>
+
+        <div class="grid-2">
+            <!-- Mathematics Subject Card -->
+            <div class="clickable-card" onclick="alert('Mathematics directory coming soon! Redirecting to Science activities for demonstration.'); navigateTo('view-science-activities');">
+                <div>
+                    <div class="card-icon">📘</div>
+                    <div class="card-title">Mathematics</div>
+                    <div class="card-desc">
+                        Access ready-made Mathematics games, puzzles, quizzes, escape rooms, and problem-solving activities.
+                    </div>
+                </div>
+                <button class="btn-card">Explore Mathematics Activities &rarr;</button>
+            </div>
+
+            <!-- Science Subject Card -->
+            <div class="clickable-card" onclick="navigateTo('view-science-activities')">
+                <div>
+                    <div class="card-icon">🔬</div>
+                    <div class="card-title">Science</div>
+                    <div class="card-desc">
+                        Access ready-made Science simulations, inquiry-based investigations, laboratory games, and interactive learning scenarios.
+                    </div>
+                </div>
+                <button class="btn-card" style="background: var(--accent-green);">Explore Science Activities &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 3: SCIENCE ACTIVITIES DIRECTORY VIEW -->
+    <div id="view-science-activities" class="view-section">
+        <div class="page-header">
+            <h2>Science Interactive Activities</h2>
+            <p>Select an activity below to start an interactive classroom session.</p>
+        </div>
+
+        <div class="grid-3">
+            <!-- Activity 1: Featured Cell City Game -->
+            <div class="clickable-card" onclick="startGame()">
+                <div>
+                    <div class="card-icon">🚨</div>
+                    <div class="card-title">Cell City: Emergency Response</div>
+                    <div class="card-desc">
+                        Deploy the correct organelles to resolve cellular crises in real time and protect Cell City from total collapse.
+                    </div>
+                </div>
+                <button class="btn-card" style="background: var(--accent-red); color: #fff;">Launch Activity &rarr;</button>
+            </div>
+
+            <!-- Placeholder Activity 2 -->
+            <div class="clickable-card badge-disabled">
+                <div>
+                    <div class="card-icon">🌿</div>
+                    <div class="card-title">Ecosystem Food Web Simulator</div>
+                    <div class="card-desc">
+                        Balance predator-prey relationships and environmental shifts in a simulated biome.
+                    </div>
+                </div>
+                <button class="btn-card" style="background: var(--border-color); color: var(--text-dim);">Preview</button>
+            </div>
+
+            <!-- Placeholder Activity 3 -->
+            <div class="clickable-card badge-disabled">
+                <div>
+                    <div class="card-icon">⚗️</div>
+                    <div class="card-title">Chemical Reaction Lab</div>
+                    <div class="card-desc">
+                        Combine elements safely in a digital laboratory to observe endothermic and exothermic reactions.
+                    </div>
+                </div>
+                <button class="btn-card" style="background: var(--border-color); color: var(--text-dim);">Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 4: CELL CITY GAME ACTIVITY VIEW -->
+    <div id="view-game" class="view-section">
+        <div class="dashboard">
+            <div class="stat-box">
+                <div class="stat-label">Scenario</div>
+                <div class="stat-value" id="scenario-num">1 / 10</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Rank Badge</div>
+                <div class="stat-value" id="current-badge" style="font-size: 1.1rem; color: var(--accent-yellow);">Novice</div>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <!-- Game Play Interface -->
+            <div id="quiz-interface">
+                <div class="scenario-card">
+                    <div class="scenario-header">Incoming Cellular Crisis!</div>
+                    <div class="scenario-text" id="scenario-text">Loading crisis scenario...</div>
+                </div>
+
+                <div class="options-grid" id="options-container">
+                    <!-- Organelle Buttons Injected Here -->
+                </div>
+
+                <div class="controls">
+                    <button class="btn-action" id="hint-btn" onclick="showHint()">Get Hint (-30 pts)</button>
+                </div>
+
+                <div class="feedback-box" id="feedback-box"></div>
+                <button class="btn-next" id="next-btn" onclick="nextScenario()">Next Emergency Request &rarr;</button>
+            </div>
+
+            <!-- End Game Summary Screen -->
+            <div class="end-screen" id="end-screen">
+                <h2>Mission Complete!</h2>
+                <p style="margin-bottom: 15px;">You saved Cell City from total cellular collapse.</p>
+                
+                <div class="badge-box">
+                    <div style="font-size: 0.9rem; color: var(--text-dim);">FINAL RANK ACHIEVED:</div>
+                    <div class="badge-title" id="final-badge">Grand Cell Master</div>
+                    <p id="badge-desc" style="font-size: 0.95rem; margin-top: 5px; color: var(--text-dim);"></p>
+                </div>
+
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">Final Score: <strong id="final-score" style="color: var(--accent-blue);">0</strong> / 1000</p>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-next" style="display: block;" onclick="restartGame()">Play Again</button>
+                    <button class="btn-next" style="display: block; background: var(--card-hover); color: var(--text-light);" onclick="navigateTo('view-science-activities')">Back to Science Hub</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- NAVIGATION ROUTER ---
+        function navigateTo(viewId) {
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const targetView = document.getElementById(viewId);
+            if (targetView) {
+                targetView.classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- CELL CITY GAME LOGIC ---
+        const scenarios = [
+            {
+                id: 1,
+                crisis: "The cell has completely run out of ATP energy during heavy cellular movement. Operations are grinding to a halt!",
+                correct: "Mitochondria",
+                options: ["Mitochondria", "Nucleus", "Ribosomes", "Lysosomes"],
+                analogy: "Power Plant",
+                hint: "This organelle performs cellular respiration to generate ATP.",
+                justification: "Mitochondria act as the power plant, converting glucose and oxygen into ATP energy via cellular respiration."
+            },
+            {
+                id: 2,
+                crisis: "High winds and dry weather are causing a plant cell to lose its rigid structure and wilt.",
+                correct: "Central Vacuole",
+                options: ["Central Vacuole", "Golgi Apparatus", "Cytoskeleton", "Lysosomes"],
+                analogy: "Water Tower",
+                hint: "It stores water and provides turgor pressure against the cell wall.",
+                justification: "The Central Vacuole stores water to create turgor pressure, keeping plant cells rigid and standing upright."
+            },
+            {
+                id: 3,
+                crisis: "Worn-out organelle fragments and cellular debris are accumulating, creating toxic clutter inside the cytoplasm.",
+                correct: "Lysosomes",
+                options: ["Endoplasmic Reticulum", "Lysosomes", "Chloroplasts", "Nucleus"],
+                analogy: "Sanitation & Recycling Center",
+                hint: "Contains digestive hydrolytic enzymes to break down waste.",
+                justification: "Lysosomes contain hydrolytic enzymes that digest worn-out parts and clear cellular waste."
+            },
+            {
+                id: 4,
+                crisis: "The organism has suffered tissue damage and urgently needs structural repair proteins.",
+                correct: "Ribosomes",
+                options: ["Ribosomes", "Cell Membrane", "Mitochondria", "Smooth ER"],
+                analogy: "Manufacturing Factories",
+                hint: "These tiny structures assemble amino acid chains.",
+                justification: "Ribosomes synthesize proteins by linking amino acids together based on genetic instructions."
+            },
+            {
+                id: 5,
+                crisis: "Unfiltered extracellular fluids and foreign chemical compounds are attempting to flood into the cytosol.",
+                correct: "Cell Membrane",
+                options: ["Cell Membrane", "Cell Wall", "Cytoskeleton", "Golgi Apparatus"],
+                analogy: "Border Security Gate",
+                hint: "It is selectively permeable and surrounds the cytoplasm.",
+                justification: "The Cell Membrane regulates what enters and leaves the cell, preventing unauthorized toxins from entering."
+            },
+            {
+                id: 6,
+                crisis: "A cell needs to undergo division to grow, but the essential genetic instructions for manufacturing all proteins are inaccessible.",
+                correct: "Nucleus",
+                options: ["Nucleus", "Ribosomes", "Mitochondria", "Lysosomes"],
+                analogy: "City Hall / Mayor's Office",
+                hint: "Contains the DNA blueprints.",
+                justification: "The Nucleus houses DNA, which controls all cell activities and stores genetic instructions for division."
+            },
+            {
+                id: 7,
+                crisis: "Newly created proteins are floating loose in the cell and cannot be packaged or shipped to their proper destinations.",
+                correct: "Golgi Apparatus",
+                options: ["Golgi Apparatus", "Smooth ER", "Chloroplasts", "Nucleus"],
+                analogy: "Post Office / Shipping Center",
+                hint: "Flattened sacs that package molecules into vesicles.",
+                justification: "The Golgi Apparatus modifies, sorts, and packages proteins into vesicles for delivery."
+            },
+            {
+                id: 8,
+                crisis: "Molecules synthesized at the cell's center are stuck and cannot reach the Golgi apparatus or cell membrane efficiently.",
+                correct: "Endoplasmic Reticulum",
+                options: ["Endoplasmic Reticulum", "Cell Membrane", "Vacuole", "Ribosomes"],
+                analogy: "Highway System",
+                hint: "A vast membrane network available in Rough and Smooth forms.",
+                justification: "The Endoplasmic Reticulum (ER) serves as an internal transport network for proteins and lipids."
+            },
+            {
+                id: 9,
+                crisis: "A plant cell is bathed in sunlight, but it cannot convert light energy into chemical sugars (glucose).",
+                correct: "Chloroplasts",
+                options: ["Mitochondria", "Chloroplasts", "Cytoskeleton", "Central Vacuole"],
+                analogy: "Solar Power Station",
+                hint: "Contains green chlorophyll pigments.",
+                justification: "Chloroplasts capture sunlight energy to carry out photosynthesis, synthesizing food for plant cells."
+            },
+            {
+                id: 10,
+                crisis: "Under mechanical pressure, an animal cell is losing its rounded shape, and internal organelles are shifting out of place.",
+                correct: "Cytoskeleton",
+                options: ["Cytoskeleton", "Cell Wall", "Cell Membrane", "Lysosomes"],
+                analogy: "Structural Beams / Framework",
+                hint: "A network of microfilaments and microtubules inside the cytosol.",
+                justification: "The Cytoskeleton provides internal structural support, maintaining cell shape and securing organelles."
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let hintUsed = false;
+
+        function startGame() {
+            currentIdx = 0;
+            score = 0;
+            document.getElementById('score').innerText = '0';
+            document.getElementById('quiz-interface').style.display = 'block';
+            document.getElementById('end-screen').style.display = 'none';
+            navigateTo('view-game');
+            updateBadge();
+            loadScenario();
+        }
+
+        function loadScenario() {
+            const current = scenarios[currentIdx];
+            hintUsed = false;
+            
+            document.getElementById('scenario-num').innerText = `${currentIdx + 1} / ${scenarios.length}`;
+            document.getElementById('scenario-text').innerText = current.crisis;
+            document.getElementById('feedback-box').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('hint-btn').style.display = 'inline-block';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            current.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-organelle';
+                btn.innerText = option;
+                btn.onclick = () => selectOption(option);
+                container.appendChild(btn);
+            });
+        }
+
+        function showHint() {
+            if (hintUsed) return;
+            hintUsed = true;
+            const current = scenarios[currentIdx];
+            const feedback = document.getElementById('feedback-box');
+            feedback.className = 'feedback-box feedback-correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = `<strong>HINT:</strong> ${current.hint}`;
+            document.getElementById('hint-btn').style.display = 'none';
+        }
+
+        function selectOption(selected) {
+            const current = scenarios[currentIdx];
+            const feedback = document.getElementById('feedback-box');
+            const btns = document.querySelectorAll('.btn-organelle');
+
+            btns.forEach(b => b.disabled = true);
+            document.getElementById('hint-btn').style.display = 'none';
+
+            if (selected === current.correct) {
+                let points = hintUsed ? 70 : 100;
+                score += points;
+                document.getElementById('score').innerText = score;
+
+                feedback.className = 'feedback-box feedback-correct';
+                feedback.innerHTML = `<strong>CORRECT DEPLOYMENT! (+${points} pts)</strong><br>` +
+                    `<em>City Analogy: ${current.analogy}</em><br><br>${current.justification}`;
+            } else {
+                feedback.className = 'feedback-box feedback-wrong';
+                feedback.innerHTML = `<strong>MISDEPLOYMENT!</strong><br>` +
+                    `Correct Organelle: <strong>${current.correct}</strong> (${current.analogy})<br><br>${current.justification}`;
+            }
+
+            feedback.style.display = 'block';
+            document.getElementById('next-btn').style.display = 'block';
+            updateBadge();
+        }
+
+        function updateBadge() {
+            let badge = "Novice";
+            if (score >= 800) badge = "Grand Cell Master";
+            else if (score >= 500) badge = "Organelle Specialist";
+            else if (score >= 300) badge = "Cytoplasm Responder";
+
+            document.getElementById('current-badge').innerText = badge;
+        }
+
+        function nextScenario() {
+            currentIdx++;
+            if (currentIdx < scenarios.length) {
+                loadScenario();
+            } else {
+                showEndScreen();
+            }
+        }
+
+        function showEndScreen() {
+            document.getElementById('quiz-interface').style.display = 'none';
+            document.getElementById('end-screen').style.display = 'block';
+            document.getElementById('final-score').innerText = score;
+
+            let badge = "Cytoplasm Novice";
+            let desc = "Keep studying the organelle structures to improve your response time!";
+
+            if (score >= 900) {
+                badge = "Grand Cell Master";
+                desc = "Flawless emergency control! Cell City operations are entirely secure under your command.";
+            } else if (score >= 600) {
+                badge = "Organelle Specialist";
+                desc = "Great job! You have a strong grasp of organelle functions and city analogies.";
+            } else if (score >= 300) {
+                badge = "Cytoplasm Responder";
+                desc = "Solid start! Review key energy and transport organelles to boost your score.";
+            }
+
+            document.getElementById('final-badge').innerText = badge;
+            document.getElementById('badge-desc').innerText = desc;
+        }
+
+        function restartGame() {
+            startGame();
+        }
+    </script>
+</body>
+</html>
